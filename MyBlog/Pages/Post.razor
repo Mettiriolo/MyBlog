@@ -1,0 +1,21 @@
+﻿@inject IConfiguration configuration;
+@page "/blog/{Id:int}"
+@using MyBlog.Data;
+<div class="container">
+    <h1>@post.Title</h1>
+    <p>@((MarkupString)post.Content)</p>
+</div>
+@code {
+    [Parameter]
+    public int Id { get; set; }
+    private AppDbContext _context;
+
+    private MyBlog.Data.Post post;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _context = new AppDbContext(configuration);
+        post = _context.Posts.Where(x=>x.Id==Id).FirstOrDefault();
+    }
+}
+ 

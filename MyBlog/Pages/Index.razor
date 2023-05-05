@@ -1,0 +1,28 @@
+﻿@page "/"
+@using MyBlog.Data;
+@inject IConfiguration configuration;
+<PageTitle>My Blog</PageTitle>
+
+<div class="container">
+    @foreach (var post in posts)
+    {
+        <a href="/blog/@post.Id">
+            <h1>@post.Title</h1>
+            <p>@post.Excerpt</p>
+        </a>
+    }
+
+</div>
+
+@code {
+    private AppDbContext _context;
+
+    private IList<MyBlog.Data.Post> posts;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _context = new AppDbContext(configuration);
+        posts = _context.Posts.ToList();
+    }
+
+}
